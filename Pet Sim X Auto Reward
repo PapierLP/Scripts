@@ -1,0 +1,7 @@
+_G.Reward = true
+spawn(function()
+while wait(30) and _G.Reward do
+local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"));
+v1.Network.Invoke("Redeem Rank Rewards");
+end
+end)
