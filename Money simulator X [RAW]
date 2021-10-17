@@ -1,0 +1,807 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/PferdeReiter/Scripts/main/New%20UI%20%7C%20Venux"))()
+local ScriptName = "Money Simulator X | From PapierLP#4789 & ImperatorWeeds#8893"
+local Paper = library.new(ScriptName, 5013109572)
+
+-- Themes
+local themes = {Background = Color3.fromRGB(24, 24, 24),Glow = Color3.fromRGB(0, 0, 0),Accent = Color3.fromRGB(10, 10, 10),LightContrast = Color3.fromRGB(20, 20, 20),DarkContrast = Color3.fromRGB(14, 14, 14),  TextColor = Color3.fromRGB(255, 255, 255)}
+
+-- Page1
+local Page1 = Paper:addPage("Functions", 5012544693)
+local Click = Page1:addSection("Option")
+local Shop = Page1:addSection("Shop")
+local PC = Page1:addSection("Digital Money")
+local PCU = Page1:addSection("Digital Money Upgrades [Test]")
+-- Page8
+local Page8 = Paper:addPage("Aura & Server", 5012544693)
+local Ore = Page8:addSection("Ore Aura")
+local Server = Page8:addSection("Server")
+-- Page9
+local Page8 = Paper:addPage("Runes", 5012544693)
+local Runes = Page8:addSection("Option")
+local RShop = Page8:addSection("Shop")
+-- Page12
+local Page12 = Paper:addPage("Hats & Crystal", 5012544693)
+local Hats = Page12:addSection("Option")
+local Crystal = Page12:addSection("Crystal Shop")
+-- Page3
+local Page3 = Paper:addPage("Auto Crafting", 5012544693)
+local AC = Page3:addSection("Option")
+-- Page4
+local Page4 = Paper:addPage("GUI's", 5012544693)
+local GUI = Page4:addSection("Option")
+local DGUI = Page4:addSection("Disable GUI's")
+-- Page6
+local Page6 = Paper:addPage("Teleport", 5012544693)
+local SM = Page6:addSection("Silver Mine")
+local GM = Page6:addSection("Gold Mine")
+local DM = Page6:addSection("Diamond Mine")
+local RM = Page6:addSection("Ruby Mine")
+local UM = Page6:addSection("Uranium Mine")
+local OM = Page6:addSection("Obsidian Mine")
+local KM = Page6:addSection("Kryptonite Mine")
+-- Page7
+local Page7 = Paper:addPage("Teleport 2", 5012544693)
+local GSM = Page7:addSection("Gems Mine")
+-- Page11
+local Page11 = Paper:addPage("Upgrades", 5012544693)
+local Upgrades1 = Page11:addSection("Upgrades | Page 1")
+local Upgrades2 = Page11:addSection("Upgrades | Page 2")
+local Upgrades3 = Page11:addSection("Upgrades | Page 3")
+local Upgrades4 = Page11:addSection("Upgrades | Page 4")
+
+-- Page5
+local Page5 = Paper:addPage("Misc & Discord", 5012544693)
+local Misc = Page5:addSection("Option")
+
+--Table + Locals
+local autocraft = {
+    ["CopperDust"] = "Copper Stone";
+    ["CopperBar"] = "Copper Ingot";
+    ["CopperPlate"] = "Copper Plate";
+    ["Wire"] = "Copper Rod";
+    ["SilverDust"] = "Silver Stone";
+    ["SilverBar"] = "Silver Ingot";
+    ["SilverPlate"] = "Silver Plate";
+    ["Wire2"] = "Silver Rod";
+    ["GoldDust"] = "Gold Stone";
+    ["GoldBar"] = "Gold Ingot";
+    ["GoldPlate"] = "Gold Plate";
+    ["DiamondDust"] = "Diamond Stone";
+    ["DiamondBar"] = "Diamond Ingot";
+    ["DiamondPlate"] = "Diamond Plate";
+    ["RubyDust"] = "Ruby Stone";
+    ["RubyBar"] = "Ruby Ingot";
+    ["RubyPlate"] = "Ruby Plate";
+    ["UraniumDust"] = "Uranium Stone";
+    ["UraniumBar"] = "Uranium Ingot";
+    ["UraniumPlate"] = "Uranium Plate";
+    ["Circuit"] = "Circuit";
+    ["QuantumDust"] = "Quantum Stone";
+    ["QuantumPlate"] = "Quantum Plate";
+    ["Circuit2"] = "Quantum Circuit";
+    ["Chip1"] = "Chip";
+    ["Chip2"] = "Processor";
+    ["Chip3"] = "PC";
+    ["Chip4"] = "Server";
+    ["Chip5"] = "Gaming Laptop";
+}
+local player = game:GetService("Players").LocalPlayer
+_G.DAutoCraft = nil
+_G.TCraftQuantity = 1
+
+local craftingRecipes = {
+    -- Copper
+    CopperMoney = {craftingMaterial = {};id = 1;output = 1;};
+    CopperDust = {craftingMaterial = {["CopperMoney"] = 1;};id = 2;output = 2;};
+    CopperBar = {craftingMaterial = {["CopperDust"] = 9;};id = 13;output = 1;};
+    CopperPlate = {craftingMaterial = {["CopperDust"] = 8;["CopperBar"] = 1;};id = 19;output = 2;};
+    Wire = {craftingMaterial = {["CopperBar"] = 1;};id = 25;output = 3;};
+    -- Silver
+    SilverMoney = {craftingMaterial = {};id = 3;output = 1;};
+    SilverDust = {craftingMaterial = {["SilverMoney"] = 1;};id = 4;output = 2;};
+    SilverBar = {craftingMaterial = {["SilverDust"] = 9;};id = 14;output = 1;};
+    SilverPlate = {craftingMaterial = {["SilverDust"] = 8;["SilverBar"] = 1;};id = 20;output = 2;};
+    Wire2 = {craftingMaterial = {["SilverPlate"] = 50;["GoldPlate"] = 20;["Wire"] = 200;["CopperBar"] = 50;};id = 26;output = 1;};
+    -- Gold
+    GoldMoney = {craftingMaterial = {};id = 5;output = 1;};
+    GoldDust = {craftingMaterial = {["GoldMoney"] = 1;};id = 6;output = 2;};
+    GoldBar = {craftingMaterial = {["GoldDust"] = 9;};id = 15;output = 1;};
+    GoldPlate = {craftingMaterial = {["GoldDust"] = 8;["GoldBar"] = 1;};id = 21;output = 2;};
+    -- Diamond
+    DiamondMoney = {craftingMaterial = {};id = 7;output = 1;};
+    DiamondDust = {craftingMaterial = {["DiamondMoney"] = 1;};id = 8;output = 2;};
+    DiamondBar = {craftingMaterial = {["DiamondDust"] = 9;};id = 16;output = 1;};
+    DiamondPlate = {craftingMaterial = {["DiamondDust"] = 8;["DiamondBar"] = 1;};id = 22;output = 2;};
+    -- Ruby
+    RubyMoney = {craftingMaterial = {};id = 9;output = 1;};
+    RubyDust = {craftingMaterial = {["RubyMoney"] = 1;};id = 10;output = 2;};
+    RubyBar = {craftingMaterial = {["RubyDust"] = 9;};id = 17;output = 1;};
+    RubyPlate = {craftingMaterial = {["RubyDust"] = 8;["RubyBar"] = 1;};id = 23;output = 2;};
+    -- Uranium
+    UraniumMoney = {craftingMaterial = {};id = 11;output = 1;};
+    UraniumDust = {craftingMaterial = {["UraniumMoney"] = 1;};id = 12;output = 2;};
+    UraniumBar = {craftingMaterial = {["UraniumDust"] = 9;};id = 18;output = 1;};
+    UraniumPlate = {craftingMaterial = {["UraniumDust"] = 8;["UraniumBar"] = 1;};id = 24;output = 2;};
+    -- Circuit + Quantum
+    Circuit = {craftingMaterial = {["SilverPlate"] = 2;["CopperPlate"] = 4;["Wire"] = 2;["GoldDust"] = 1;};id = 27;output = 1;};
+    QuantumDust = {craftingMaterial = {["CopperDust"] = 2500;["SilverDust"] = 2500;["GoldDust"] = 2500;["DiamondDust"] = 2500;["UraniumDust"] = 1000;};id = 29;output = 1;};
+    QuantumPlate = {craftingMaterial = {["QuantumDust"] = 8;["SilverBar"] = 1000;["GoldBar"] = 1000;["UraniumBar"] = 500;};id = 30;output = 1;};
+    Circuit2 = {craftingMaterial = {["QuantumPlate"] = 4;["Wire2"] = 20;["UraniumDust"] = 5000;["Circuit"] = 100;};id = 28;output = 1;};
+    -- Chip
+    Chip1 = {craftingMaterial = {["GoldPlate"] = 2;["CopperPlate"] = 8;["Circuit"] = 5;["Wire"] = 6;};id = 31;output = 1;};
+    Chip2 = {craftingMaterial = {["GoldPlate"] = 50;["Chip1"] = 18;["Circuit"] = 20;};id = 32;output = 1;};
+    Chip3 = {craftingMaterial = {["Circuit"] = 100;["Chip2"] = 25;["Chip1"] = 100;["Wire"] = 1000;};id = 33;output = 1;};
+    Chip4 = {craftingMaterial = {["Circuit"] = 25000;["Chip2"] = 2000;["Chip3"] = 50;["Wire"] = 100000;};id = 34;output = 1;};
+    Chip5 = {craftingMaterial = {["Wire2"] = 50000;["Chip3"] = 1500;["Circuit2"] = 100;["Chip4"] = 50;["Chip2"] = 25000;};id = 35;output = 1;};
+    -- Copper Generator
+    --CopperGenerator1 = {craftingMaterial = {["CopperPlate"] = 4;["Wire"] = 6;["Circuit"] = 2;};id = 1;output = 1;};
+};
+local SphereSize = 32
+local SphereColor = Color3.new(1,1,1)
+local RuneAmount = 1
+local MRuneAmount = 1
+
+local CUpgrade1 = nil
+local CUpgrade2 = nil
+local CUpgrade3 = nil
+local CUpgrade4 = nil
+local Upgrade1 = {}
+local Upgrade2 = {}
+local Upgrade3 = {}
+local Upgrade4 = {}
+
+local CCrystals = nil
+local Crystals = {}
+local CrystalList = {
+        ["More Money | +1.01x"] = {["ID"] = "1";},
+        ["More Money | +1.03x"] = {["ID"] = "2";},
+        ["More Money | +1.05x"] = {["ID"] = "3";},
+        ["More Money | +1.1x"] = {["ID"] = "4";},
+        ["More Money | +1.25x"] = {["ID"] = "5";},
+        ["More Ores | +1.02x"] = {["ID"] = "6";},
+        ["More Ores | +1.05x"] = {["ID"] = "7";},
+        ["More Ores | +1.11x"] = {["ID"] = "8";},
+        ["Better Generator | +1.01x"] = {["ID"] = "9";},
+        ["Better Generator | +1.05x"] = {["ID"] = "10";}
+}
+
+local CPServer = nil
+local PServer = {}
+local PUList = {
+        ["+0.2x"] = {["ID"] = "1";},
+        ["+0.4x"] = {["ID"] = "2";},
+        ["+0.6x"] = {["ID"] = "3";},
+        ["+0.1x"] = {["ID"] = "4";},
+        ["+0.5x"] = {["ID"] = "5";},
+        ["+1.0x"] = {["ID"] = "6";},
+        ["+0.7x"] = {["ID"] = "7";}
+}
+
+
+local UList = {
+    ["UpgradeL1"] = { 
+        ["More money"] = {["RName"] = "More money";},
+        ["Research points cooldown"] = {["RName"] = "ResearchSpeed";},
+        ["Critical click chance"] = {["RName"] = "CriticalChance";},
+        ["Ore damage"] = {["RName"] = "OreDamage";},
+        ["Critical bonus"] = {["RName"] = "CriticalBonus";},
+        ["More points"] = {["RName"] = "MorePoints";}
+    },
+    ["UpgradeL2"] = { 
+        ["Double ores"] = {["RName"] = "DoubleOre";},
+        ["Auto gems"] = {["RName"] = "AutoGems";},
+        ["More money"] = {["RName"] = "MoreMoney2";},
+        ["Mega critical"] = {["RName"] = "MegaCritical";},
+        ["More XP"] = {["RName"] = "MoreXP";},
+        ["Gold jackpot"] = {["RName"] = "GoldJackpot";}
+    },
+    ["UpgradeL3"] = { 
+        ["Radiation damage"] = {["RName"] = "RadiationDamage";},
+        ["Ore cooldown 2"] = {["RName"] = "OreCooldown2";},
+        ["Ore damage 2"] = {["RName"] = "OreDamage2";},
+        ["More money"] = {["RName"] = "MoreMoney3";},
+        ["More ores"] = {["RName"] = "MoreOres";},
+        ["Triple crystal"] = {["RName"] = "TripleCrystal";}
+    },
+    ["UpgradeL4"] = { 
+        ["Gold jackpot II"] = {["RName"] = "GoldJackpot2";},
+        ["Gems generator"] = {["RName"] = "GemsGenerator";}
+    }
+}
+
+local HatsList = {1,2,3,4,5}
+local CHat = nil
+--Function
+function craftItem(itemName,quantity)
+    if not string.find(itemName, "Money") then
+        local output = math.round(quantity / craftingRecipes[itemName].output+0.4)
+        for i,v in pairs(craftingRecipes[itemName].craftingMaterial) do
+            if player.Stats[i].Value < math.round(v*quantity / craftingRecipes[itemName].output+0.4) then
+                local difference = math.round(v*quantity - player.Stats[i].Value / craftingRecipes[i].output+0.4)
+                craftItem(i,difference)
+                player.Stats[i].Changed:Wait()
+                if player.Stats[i].Value <= math.round(v*quantity / craftingRecipes[itemName].output+0.4) then
+                    craftItem(itemName,output)
+                end
+            end
+        end
+        game:GetService("ReplicatedStorage").Craft:FireServer(craftingRecipes[itemName].id,output)
+    end
+end
+
+for i,v in pairs(CrystalList) do
+    table.insert(Crystals,i)
+end
+for i,v in pairs(PUList) do
+    table.insert(PServer,i)
+end
+
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameGui.Ores.Upgrades:GetChildren()) do
+    if string.find(v.Name, "Upgrade") then
+        table.insert(Upgrade1,v.About.Text)
+    end
+end
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameGui.Ores.Upgrades2:GetChildren()) do
+    if string.find(v.Name, "Upgrade") then
+        table.insert(Upgrade2,v.About.Text)
+    end
+end
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameGui.Ores.Upgrades3:GetChildren()) do
+    if string.find(v.Name, "Upgrade") then
+        table.insert(Upgrade3,v.About.Text)
+    end
+end
+for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameGui.Ores.Upgrades4:GetChildren()) do
+    if string.find(v.Name, "Upgrade") then
+        table.insert(Upgrade4,v.About.Text)
+    end
+end
+--XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+Click:addToggle("Auto Click", default,function(arg)
+    _G.AutoClick = arg
+end)
+Click:addToggle("Auto Refill", default,function(arg)
+    _G.AutoRefill = arg
+end)
+Click:addToggle("Auto Collect Gems", default,function(arg)
+    _G.AutoCollectGems = arg
+end)
+Ore:addColorPicker("Aura Color", color, function(color3)
+    SphereColor = color3
+    if _G.OreKillAura then
+        game:GetService("Workspace")[game.Players.LocalPlayer.Name].Sphere.Color = color3
+    end
+end)
+Ore:addSlider("Size", 64, 0, 64, function(value)
+    SphereSize = value/2
+    if _G.OreKillAura then
+        game:GetService("Workspace")[game.Players.LocalPlayer.Name].Sphere.Size = Vector3.new(value,value,value)
+    end
+end)
+Ore:addToggle("Ore KillAura", default,function(arg)
+    _G.OreKillAura = arg
+end)
+Click:addToggle("Disable Coin Rain", default,function(arg)   
+    _G.DisableCoinRain = arg 
+end)
+Click:addButton("Collect All RainbowBucks", function() 
+    for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
+        if string.find(v.Name, "RainbowBuck") then
+            firetouchinterest(v.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+        end
+    end
+end)
+Shop:addToggle("Auto Upgrade Rank", default,function(arg)
+    _G.AutoUpgradeRank = arg
+end)
+Shop:addToggle("Auto Upgrade Power", default,function(arg)
+    _G.AutoUpgradePower = arg
+end)
+Shop:addToggle("Auto Upgrade Bag", default,function(arg)
+    _G.AutoUpgradeBag = arg 
+end)
+Shop:addToggle("Auto Upgrade Tier", default,function(arg)
+    _G.AutoUpgradeTier = arg 
+end)
+PC:addToggle("Auto Kill Mobs", default,function(arg)
+    _G.AutoKillMobs = arg 
+end)
+PC:addToggle("Auto Test PC", default,function(arg)
+    _G.AutoTestPC = arg
+end)
+PC:addToggle("Auto Generate Digital Money", default,function(arg)
+    _G.AutoGenerateDigitalMoney = arg
+end)
+PCU:addToggle("Auto Damage", default,function(arg)
+    _G.AutoDamage = arg
+end)
+PCU:addToggle("Auto Cooldown", default,function(arg)
+    _G.AutoCooldown = arg
+end)
+PCU:addToggle("Auto Health", default,function(arg)
+    _G.AutoHealth = arg
+end)
+AC:addDropdown(_G.DAutoCraft, autocraft, function(arg)
+    if arg ~= nil then
+        for i,v in pairs(autocraft) do
+            if v == arg then
+                _G.DAutoCraft = i
+            end
+        end
+    end
+end)
+AC:addTextbox('Amount [Default: 1]', default, function(value, Finish) if Finish and tonumber(value) and tonumber(value) > 0 then _G.TCraftQuantity = value end end)
+AC:addButton("Craft", function()
+    spawn(function()
+        craftItem(_G.DAutoCraft,_G.TCraftQuantity) 
+    end)
+end)
+
+GUI:addButton("Factory", function() 
+    firetouchinterest(game:GetService("Workspace").CraftPad2.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+    wait(.1)
+    firetouchinterest(game:GetService("Workspace").CraftPad2.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 1)
+end)
+GUI:addButton("Rune", function() 
+    firetouchinterest(game:GetService("Workspace").RunesPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+    wait(.1)
+    firetouchinterest(game:GetService("Workspace").RunesPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 1)
+end)
+GUI:addButton("Research Shop", function() 
+    firetouchinterest(game:GetService("Workspace").ResearchPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+    wait(.1)
+    firetouchinterest(game:GetService("Workspace").ResearchPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 1)
+end)
+GUI:addButton("Upgrade Shop", function() 
+    firetouchinterest(game:GetService("Workspace").OrePad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+    wait(.1)
+    firetouchinterest(game:GetService("Workspace").OrePad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 1)
+end)
+GUI:addButton("Crystal", function() 
+    firetouchinterest(game:GetService("Workspace").CrystalPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+    wait(.1)
+    firetouchinterest(game:GetService("Workspace").CrystalPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 1)
+end)
+GUI:addButton("Shop", function() 
+    firetouchinterest(game:GetService("Workspace").ShopPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 0)
+    wait(.1)
+    firetouchinterest(game:GetService("Workspace").ShopPad.TouchInterest.Parent, game.Players.LocalPlayer.Character.Head, 1)
+end)
+SM:addButton("Silver 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(182.0052947998, 13.240770339966, -5.6302857398987) end)
+SM:addButton("Silver 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(248.2628326416, 19.240766525269, 57.643604278564) end)
+SM:addButton("Silver 3", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(270.09536743164, 11.240770339966, 113.69371795654) end)
+SM:addButton("Silver 4", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(340.19964599609, 11.73459815979, 242.08270263672) end)
+SM:addButton("Silver 5", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(479.96496582031, 11.613832473755, -78.793830871582) end)
+
+
+GM:addButton("Gold 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(262.17034912109, 13.240770339966, -27.251270294189) end)
+--GM:addButton("Gold 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(333.11190795898, 13.240770339966, -18.453081130981) end)
+GM:addButton("Gold 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(376.6611328125, 12.080995559692, 7.8271560668945) end)
+--GM:addButton("Gold 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(429.19970703125, 11.240770339966, -57.84521484375) end)
+GM:addButton("Gold 3", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(464.01092529297, 11.178270339966, -6.4595828056335) end)
+GM:addButton("Gold 4", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(567.03698730469, 12.147020339966, -3.7493650913239) end)
+GM:addButton("Gold 5", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(507.14904785156, 11.825798988342, -110.11371612549) end)
+
+DM:addButton("Diamond 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(185.59407043457, 13.240770339966, -90.212852478027) end)
+DM:addButton("Diamond 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(196.14088439941, 13.366624832153, -172.75175476074) end)
+DM:addButton("Diamond 3", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(542.61743164063, 11.647019386292, -154.09674072266) end)
+
+RM:addButton("Ruby 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-110.72334289551, 7.2407722473145, 222.14570617676) end)
+RM:addButton("Ruby 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-258.34085083008, -63.72891998291, 253.22662353516) end)
+RM:addButton("Ruby 3", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(482.77072143555, 11.64702129364, -129.52841186523) end)
+
+UM:addButton("Uranium 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-301.33642578125, -66.496574401855, 221.38465881348) end)
+UM:addButton("Uranium 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-355.30487060547, -65.057945251465, 240.5199432373) end)
+UM:addButton("Uranium 3", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-392.95599365234, -63.759246826172, 183.48112487793) end)
+
+KM:addButton("Kryptonite 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-302.40997314453, -65.112113952637, 298.82043457031) end)
+KM:addButton("Kryptonite 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-245.80067443848, -68.701026916504, 357.94924926758) end)
+
+OM:addButton("Obsidian 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-344.59371948242, -70.617576599121, 330.17007446289) end)
+OM:addButton("Obsidian 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-431.57543945313, -69.682174682617, 339.31927490234) end)
+
+GSM:addButton("Gems 1", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-199.91770935059, 24.11608505249, 84.40315246582) end)
+GSM:addButton("Gems 2", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-234.0486907959, 37.240772247314, 32.111217498779) end)
+GSM:addButton("Gems 3", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-287.86877441406, 28.240772247314, 52.590698242188) end)
+GSM:addButton("Gems 4", function() game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-289.37838745117, 27.240766525269, -16.909202575684) end)
+
+DGUI:addToggle("Disable LvlUp Gui", default,function(arg)
+    _G.DLvlUp = arg
+end)
+Runes:addTextbox('Rune Amount [Default: 1]', default, function(value, Finish) 
+    if Finish then
+        RuneAmount = value
+    end 
+end)
+Runes:addTextbox('Mega Rune Amount [Default: 1]', default, function(value, Finish) 
+    if Finish then
+        MRuneAmount = value
+    end
+end)
+Runes:addToggle("Buy Rune", default,function(arg)
+    _G.BuyRune = arg 
+end)
+Runes:addToggle("Buy Mega Rune", default,function(arg)
+    _G.BuyMRune = arg
+end)
+RShop:addToggle("Buy Rune luck", default,function(arg)
+    _G.BuyRuneluck = arg 
+end)
+RShop:addToggle("Buy More Points", default,function(arg)
+    _G.BuyRunePoints = arg 
+end)
+RShop:addToggle("Buy More Money ", default,function(arg)
+    _G.BuyRuneMoney = arg
+end)
+
+Upgrades1:addDropdown("Upgrades | Page 1", Upgrade1, function(arg)
+    CUpgrade1 = arg
+end)
+Upgrades1:addToggle("Buy Upgrade", default,function(arg)
+    _G.BuyUpgrade1 = arg 
+end)
+
+Upgrades2:addDropdown("Upgrades | Page 2", Upgrade2, function(arg)
+    CUpgrade2 = arg
+end)
+Upgrades2:addToggle("Buy Upgrade", default,function(arg)
+    _G.BuyUpgrade2 = arg 
+end)
+Upgrades3:addDropdown("Upgrades | Page 3", Upgrade3, function(arg)
+    CUpgrade3 = arg
+end)
+Upgrades3:addToggle("Buy Upgrade", default,function(arg)
+    _G.BuyUpgrade3 = arg 
+
+end)
+Upgrades4:addDropdown("Upgrades | Page 4", Upgrade4, function(arg)
+    CUpgrade4 = arg
+end)
+Upgrades4:addToggle("Buy Upgrade", default,function(arg)
+    _G.BuyUpgrade4 = arg 
+end)
+
+Hats:addDropdown("Hats", HatsList, function(arg)
+    CHat = arg
+end)
+Hats:addToggle("Buy Hat", default,function(arg)
+    _G.BuyHat = arg 
+end)
+
+Crystal:addDropdown("Crystal Upgrades", Crystals, function(arg)
+    CCrystals = arg
+end)
+Crystal:addToggle("Buy Upgrade", default,function(arg)
+    _G.BuyUpgradePServer = arg 
+end)
+
+Server:addDropdown("Server Upgrades", PServer, function(arg)
+    CPServer = arg
+end)
+Server:addToggle("Buy Upgrade", default,function(arg)
+    _G.BuyUpgradePServer = arg 
+end)
+
+
+Server:addToggle("Auto Buy Bonus [1M Diamonds]", default,function(arg)
+    _G.AutoBuyBonus1M = arg 
+end)
+Misc:addButton("Copy Discord link", function() setclipboard("https://discord.gg/m3zSYNdcCD") end)
+Misc:addButton("Join Discord [Synapse Only]", function()
+    syn.request({
+        Url = "http://127.0.0.1:6463/rpc?v=1",
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json",
+            ["Origin"] = "https://discord.com"
+        },
+        Body = game:GetService("HttpService"):JSONEncode({
+            cmd = "INVITE_BROWSER",
+            args = {
+                code = "m3zSYNdcCD"
+            },
+            nonce = game:GetService("HttpService"):GenerateGUID(false)
+        }),
+     })
+end)
+Misc:addToggle("NoClip", default,function(arg)
+    _G.NoClip = arg
+end)
+Misc:addTextbox('FOV', default, function(value, Finish) if Finish then game:GetService'Workspace'.Camera.FieldOfView = value end end)
+Misc:addTextbox('Speed', default, function(value, Finish) if Finish then game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = value end end)
+Misc:addTextbox('Jump Height', default, function(value, Finish) if Finish then game.Players.LocalPlayer.Character.Humanoid.JumpPower = value end end)
+Misc:addKeybind("Toggle Keybind", Enum.KeyCode.K, function() Paper:toggle() end, function() end)
+Misc:addButton("Rejoin Game", function() game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer) end)
+Misc:addButton("Destroy GUI", function() game:GetService("CoreGui")[ScriptName]:Destroy() end)
+
+--Spawn Functions
+spawn(function()
+    while wait() do
+        if _G.NoClip then
+            local stepped
+            stepped = game:GetService("RunService").Stepped:Connect(function()
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            end)
+            repeat wait() until not _G.NoClip
+            stepped:Disconnect()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoBuyBonus1M then
+            game:GetService("ReplicatedStorage").GiveBonus:FireServer(5,5)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyUpgradePServer then
+            game:GetService("ReplicatedStorage").IncreaseVipBonus:FireServer(PUList[CPServer].ID)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyHat then
+            game:GetService("ReplicatedStorage").BuyHat:FireServer(CHat)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyUpgrade4 then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer(UList.UpgradeL4[CUpgrade4].RName)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyUpgrade3 then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer(UList.UpgradeL3[CUpgrade3].RName)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyUpgrade2 then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer(UList.UpgradeL2[CUpgrade2].RName)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyUpgrade1 then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer(UList.UpgradeL1[CUpgrade1].RName)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyRuneMoney then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer("MoreMoney4")
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyRunePoints then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer("MoreClickPoints")
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyRuneluck then
+            game:GetService("ReplicatedStorage").OreUpgrades:FireServer("RuneLuck")
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyMRune then
+            game:GetService("ReplicatedStorage").BuyRune2:FireServer(MRuneAmount)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.BuyRune then
+            game:GetService("ReplicatedStorage").BuyRune:FireServer(RuneAmount)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.DLvlUp then
+            for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.GameGui:GetChildren()) do if v:IsA("Frame") and v.Name == "LevelUp" then v.Visible = not _G.DLvlUp end end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoHealth then
+            game:GetService("ReplicatedStorage").UpgradeComputer:FireServer(3)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoCooldown then
+            game:GetService("ReplicatedStorage").UpgradeComputer:FireServer(2)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoDamage then
+            game:GetService("ReplicatedStorage").UpgradeComputer:FireServer(1)
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoGenerateDigitalMoney then
+            game:GetService("ReplicatedStorage").GenerateDigitalMoney:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoTestPC then
+            game:GetService("ReplicatedStorage").TestPc:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoKillMobs then
+            for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
+                if string.find(v.Name, "ComputerDefence") and v:FindFirstChild("Enemies") then
+                    for i2,v2 in pairs(v.Enemies:GetChildren()) do
+                        if v2:FindFirstChildOfClass("ClickDetector") then fireclickdetector(v2:FindFirstChildOfClass("ClickDetector")) end
+                    end
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoUpgradeTier then
+            game:GetService("ReplicatedStorage").TierUp:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoUpgradeBag then
+            game:GetService("ReplicatedStorage").UpgradeBag:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoUpgradePower then
+            game:GetService("ReplicatedStorage").UpgradePower:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoUpgradeRank then
+            game:GetService("ReplicatedStorage").UpgradeRank:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.DisableCoinRain then
+            for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
+                if string.find(v.Name, "CoinLevel") then
+                    game:GetService("Debris"):AddItem(v, 0)
+                end
+            end
+            local childadded
+            childadded = game:GetService("Workspace").ChildAdded:Connect(function(child)
+                if string.find(child.Name, "CoinLevel") then
+                    game:GetService("Debris"):AddItem(child, 0)
+                end
+            end)
+            repeat wait() until not _G.DisableCoinRain
+            childadded:Disconnect()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoCollectGems then
+            for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
+                if string.find(v.Name, "Gem") and v:FindFirstChildOfClass("ClickDetector") and not string.find(v.Name, "Spawner") then
+                    fireclickdetector(v:FindFirstChildOfClass("ClickDetector"))
+                end
+            end
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoRefill then
+            game:GetService("ReplicatedStorage").FillMoney:FireServer()
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.AutoClick then
+            local stepped
+            stepped = game:GetService("RunService").Stepped:Connect(function()
+                game:GetService("ReplicatedStorage").GetMoney:FireServer("DropOn")
+                if not _G.AutoClick then stepped:Disconnect() end
+            end)
+            repeat wait() until not _G.AutoClick
+        end
+    end
+end)
+spawn(function()
+    while wait() do
+        if _G.OreKillAura then
+            if not game.Players.LocalPlayer.Character:FindFirstChild("Sphere") then
+                local Sphere = Instance.new("Part")
+                Sphere.Name = "Sphere"
+                Sphere.Shape = "Ball"
+                Sphere.Color = SphereColor
+                Sphere.CastShadow = false
+                Sphere.Material = "ForceField"
+                Sphere.Size = Vector3.new(SphereSize*2,SphereSize*2,SphereSize*2)
+                Sphere.CanCollide = false
+                Sphere.CanTouch = false
+                Sphere.Massless = true
+                local Weld = Instance.new("WeldConstraint")
+                Weld.Part0 = game.Players.LocalPlayer.Character.PrimaryPart
+                Weld.Part1 = Sphere
+                Sphere.Position = game.Players.LocalPlayer.Character.PrimaryPart.Position
+                Weld.Parent = Sphere
+                Sphere.Parent = game.Players.LocalPlayer.Character
+            end
+        else
+            if game.Players.LocalPlayer.Character:FindFirstChild("Sphere") then
+                game.Players.LocalPlayer.Character:FindFirstChild("Sphere"):Destroy()
+            end
+        end
+        while _G.OreKillAura and wait() do
+            for i,v in pairs(game:GetService("Workspace").Ores:GetChildren()) do
+                if v.CanCollide == true then
+                    if (game.Players.LocalPlayer.Character.PrimaryPart.Position - v.Position).Magnitude < SphereSize then
+                        fireclickdetector(v:FindFirstChildOfClass("ClickDetector"))
+                    end
+                end
+            end
+        end
+    end
+end)
+
+-- ANTI AFK
+_G.Ai_Enled = true
+while wait() do
+    if game:IsLoaded() then
+        break
+    end
+end
+wait(1)
+if _G.Ai_Enled then
+    game.StarterGui:SetCore(
+        "ChatMakeSystemMessage",
+        {
+            Text = "[Script] Loaded !",
+            Font = Enum.Font.SourceSansBold,
+            FontSize = Enum.FontSize.Size24
+        }
+    )
+
+    while wait(15) do
+        local VirtualUser = game:service "VirtualUser"
+        VirtualUser:CaptureController()
+        VirtualUser:ClickButton2(Vector2.new())
+    end
+end
